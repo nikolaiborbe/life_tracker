@@ -39,7 +39,6 @@ MORNING_Q = [
     ("motivation",    "Motivation to study 1–5? ",                                  int),
     ("prev_detox",    "Yesterday detox success 0/1 (enter skip)? ",                int),
     ("obsession_lvl", "Obsession temperature today 1–5? ",                           int),
-    ("detox_success",     "No junk media after 18:00? 0/1 (enter skip)? ",         int),
     ("primary_goal",  "Primary technical goal for today? ",                         str),
 ]
 
@@ -54,7 +53,7 @@ EVENING_Q = [
 ]
 
 # metric for instant pop‑up
-MOTIVATION_METRIC = {"morning": "problems_solved", "evening": "flow_ratio"}
+MOTIVATION_METRIC = {"morning": "problems_solved", "evening": "total_hours"}
 
 # ── Core functions ─────────────────────────────────────────────────────────
 
@@ -78,6 +77,7 @@ def _ask(period: str, qspec):
         shallow = row.get("shallow_work_hours") or 0
         total = deep + shallow
         row["flow_ratio"] = round(deep / total, 3) if total else None
+        row["total_hours"] = total
 
         # variable‑ratio reward: roll a d6
         roll = random.randint(1, 6)
@@ -92,9 +92,6 @@ def _ask(period: str, qspec):
     if metric == "flow_ratio":
         print("""Flow ratio = deep_work_hours / (deep_work_hours + shallow_work_hours).
               Higher means a greater share of your day was true, distraction‑free deep work.""")
-    if metric:
-        _plot_single(metric, display=True, save=False,
-                     title_suffix=f" — {period.capitalize()}")
     if metric:
         _plot_single(metric, display=True, save=False,
                      title_suffix=f" — {period.capitalize()}")
@@ -181,6 +178,9 @@ def _plot_single(col: str, *, df: _pd.DataFrame | None = None, display: bool, sa
     if col == "problems_solved":
         y = y.cumsum()
         label = "Cumulative Problems Solved"
+    elif col == "total_hours":
+        y = y.cumsum()
+        label = "Cumulative Total Hours Worked"
     else:
         label = col.replace("_", " ").title()
 
@@ -219,4 +219,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
