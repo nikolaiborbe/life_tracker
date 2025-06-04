@@ -36,7 +36,6 @@ MORNING_Q = [
     ("freshness",     "Wake freshness 1–5 (enter to skip)? ",                       int),
     ("anxiety",       "Anxiety level 1–5 (enter to skip)? ",                        int),
     ("depression",  "How depressed do you feel 1–5 (enter to skip)? ",                int),
-    ("depression",  "How depressed do you feel 1–5 (enter to skip)? ",                int),
     ("curiosity",     "Curiosity temperature 1–5? ",                                int),
     ("motivation",    "Motivation to study 1–5? ",                                  int),
     ("prev_detox",    "Yesterday detox success 0/1 (enter skip)? ",                int),
